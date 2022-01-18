@@ -1,6 +1,6 @@
-export default class Base {
-    constractor(page) {
+export class Base {
+    constructor(page) {
         this.page = page;
+        this.baseUrl = 'https://www.niche.com/';
     }
-    baseUrl = 'https://www.niche.com/';
 }
