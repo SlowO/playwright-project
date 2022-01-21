@@ -1,5 +1,6 @@
 import { CollegeConsideration } from './in-college/considering/college-consideration.mjs'
 import { SearchingFor } from './neither/searching-for.mjs'
+import {} from '@playwright/test';
 
 export class CurrentEnrollment {
     constructor(page) {
@@ -16,11 +17,11 @@ export class CurrentEnrollment {
 
     async selectCollege() {
         await this.page.click(this.college);
-        return new CollegeConsideration();
+        return new CollegeConsideration(this.page);
     }
 
-    async selectCollegePath() {
-        await this.page.click(this.college);
-        return new SearchingFor();
+    async selectNeither() {
+        await this.page.click(this.neither);
+        return new SearchingFor(this.page);
     }
 }

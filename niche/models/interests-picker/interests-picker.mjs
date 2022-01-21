@@ -12,7 +12,7 @@ export class InterestsPicker {
 
     async selectCollegePath() {
         await this.page.click(this.college);
-        return new CurrentEnrollment();
+        return new CurrentEnrollment(this.page);
     }
 
     async selectK12() {

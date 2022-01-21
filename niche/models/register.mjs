@@ -1,10 +1,10 @@
 //@ts-check
-import { Base } from '../models/base.mjs';
+import { BasePage } from '../models/base.mjs';
 import { InterestsPicker } from '../models/interests-picker/interests-picker.mjs';
 
-export class Register {
+export class Register extends BasePage {
     constructor(page) {
-        this.page = page;
+        super(page);
         // locators
         this.firstName = '#first';
         this.lastName = '#last';
@@ -12,14 +12,39 @@ export class Register {
         this.email = '#email';
         this.password = '#password';
         this.rememberMe = '#rememberMe';
-        this.interests = new InterestsPicker();
+        this.interests = new InterestsPicker(page);
+        this.terminalMessage = "//*[@class= 'option-picker__terminal-message']//strong";
         this.emailSubscription = '#emailOptIn';
-        this.continueButton = '.form__submit__btn--submit'
+        this.continueButton = '.form__submit__btn--submit';
     }
 
-    async navigate(page) {
-        const basePage = new Base();
-        await this.page.goto(basePage.baseUrl + page)
+    // Interest picker
+    async takeCollegeTransferPath() {
+        const current = await this.interests.selectCollegePath();
+        const consideration = await current.selectCollege();
+        await consideration.selectTransferring();
+    }
+
+    async takeCollegeGraduatePath() {
+        const current = await this.interests.selectCollegePath();
+        const consideration = current.selectCollege();
+        await (await consideration).selectGraduateProgram();
+    }
+
+    async takeAdultCollegePath() {
+        const current = await this.interests.selectCollegePath();
+        const lookingFor = current.selectNeither();
+        const program = (await lookingFor).selectCollegeForMyself();
+        await (await program).selectCollege();
+    }
+
+    async getTerminalMessage() {
+        return await this.page.innerText(this.terminalMessage);
+    }
+
+    // Rest of the form
+    async navigate() {
+        await super.navigate('account/register/')
     }
 
     async enterName(name) {
@@ -63,7 +88,7 @@ export class Register {
     async clickContinue() {
         await this.page.click(this.continueButton);
     }
-    
+
     /**
      * Fillout the register form without unchecking the checkboxes
      * @param {*} name 

@@ -1,4 +1,5 @@
 import { CollegeForMyself } from './college-for-myself/college-for-myself.mjs'
+import {} from '@playwright/test';
 
 export class SearchingFor {
     constructor(page) {
@@ -16,7 +17,7 @@ export class SearchingFor {
 
     async selectCollegeForMyself() {
         await this.page.click(this.collegeForMyself);
-        return new CollegeForMyself();
+        return new CollegeForMyself(this.page);
     }
 
     async selectCollegeForChile() {
