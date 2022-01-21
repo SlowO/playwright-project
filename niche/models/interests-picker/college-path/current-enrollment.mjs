@@ -1,4 +1,4 @@
-import { CollegeConsideration } from './in-college/considering/college-consideration.mjs'
+import { CollegeConsideration } from './in-college/college-consideration.mjs'
 import { SearchingFor } from './neither/searching-for.mjs'
 import {} from '@playwright/test';
 
