@@ -18,24 +18,53 @@ export class Register extends BasePage {
         this.continueButton = '.form__submit__btn--submit';
     }
 
+    async navigate() {
+        await super.navigate('account/register/')
+    }
+
     // Interest picker
     async takeCollegeTransferPath() {
         const current = await this.interests.selectCollegePath();
-        const consideration = await current.selectCollege();
+        this.collegeTransferPath(current);
+    }
+
+    // Intereset picker's start point for "No Essay" College Scholarship page
+    async collegeTransferPath(currentEnrollment) {
+        const consideration = await currentEnrollment.selectCollege();
         await consideration.selectTransferring();
     }
 
     async takeCollegeGraduatePath() {
         const current = await this.interests.selectCollegePath();
-        const consideration = current.selectCollege();
-        await (await consideration).selectGraduateProgram();
+        this.collegeGraduatePath(current);
+    }
+
+    // Intereset picker's start point for "No Essay" College Scholarship page
+    async collegeGraduatePath(currentEnrollment) {
+        const consideration = await currentEnrollment.selectCollege();
+        await consideration.selectGraduateProgram();
     }
 
     async takeAdultCollegePath() {
         const current = await this.interests.selectCollegePath();
-        const lookingFor = current.selectNeither();
-        const program = (await lookingFor).selectCollegeForMyself();
-        await (await program).selectCollege();
+        this.adultCollegePath(current);
+    }
+
+    // Intereset picker's start point for "No Essay" College Scholarship page
+    async adultCollegePath(currentEnrollment) {
+        const lookingFor = await currentEnrollment.selectNeither();
+        const program = await lookingFor.selectCollegeForMyself();
+        await program.selectCollege();
+    }
+
+    async takeCollegeStillInHighSchoolPath() {
+        const current = await this.interests.selectCollegePath();
+        this.selectInHighSchool(current);
+    }
+
+    // Intereset picker's start point for "No Essay" College Scholarship page
+    async selectInHighSchool(currentEnrollment) {
+        await currentEnrollment.selectCollege();
     }
 
     async getTerminalMessage() {
@@ -43,10 +72,6 @@ export class Register extends BasePage {
     }
 
     // Rest of the form
-    async navigate() {
-        await super.navigate('account/register/')
-    }
-
     async enterName(name) {
         await this.page.fill(this.firstName, name);
     }
