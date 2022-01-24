@@ -8,6 +8,6 @@ export class NoEssayScholarship extends Register {
     }
 
     async navigate() {
-        await BasePage.prototype.navigate('colleges/scholarships/no-essay-scholarship/');
+        await new BasePage(this.page).navigate('colleges/scholarships/no-essay-scholarship/');
     }
 }

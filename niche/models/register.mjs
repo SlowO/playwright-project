@@ -1,6 +1,7 @@
 //@ts-check
 import { BasePage } from '../models/base.mjs';
 import { InterestsPicker } from '../models/interests-picker/interests-picker.mjs';
+import { CurrentEnrollment } from '../models/interests-picker/college-path/current-enrollment.mjs';
 
 export class Register extends BasePage {
     constructor(page) {
@@ -13,7 +14,8 @@ export class Register extends BasePage {
         this.password = '#password';
         this.rememberMe = '#rememberMe';
         this.interests = new InterestsPicker(page);
-        this.terminalMessage = "//*[@class= 'option-picker__terminal-message']//strong";
+        this.currentEnrollment = new CurrentEnrollment(page);
+        this.terminalMessage = '.option-picker__terminal-message';
         this.emailSubscription = '#emailOptIn';
         this.continueButton = '.form__submit__btn--submit';
     }
@@ -24,47 +26,47 @@ export class Register extends BasePage {
 
     // Interest picker
     async takeCollegeTransferPath() {
-        const current = await this.interests.selectCollegePath();
-        this.collegeTransferPath(current);
+        await this.interests.selectCollegePath();
+        this.collegeTransferPath();
     }
 
     // Intereset picker's start point for "No Essay" College Scholarship page
-    async collegeTransferPath(currentEnrollment) {
-        const consideration = await currentEnrollment.selectCollege();
+    async collegeTransferPath() {
+        const consideration = await this.currentEnrollment.selectCollege();
         await consideration.selectTransferring();
     }
 
     async takeCollegeGraduatePath() {
-        const current = await this.interests.selectCollegePath();
-        this.collegeGraduatePath(current);
+        await this.interests.selectCollegePath();
+        this.collegeGraduatePath();
     }
 
     // Intereset picker's start point for "No Essay" College Scholarship page
-    async collegeGraduatePath(currentEnrollment) {
-        const consideration = await currentEnrollment.selectCollege();
+    async collegeGraduatePath() {
+        const consideration = await this.currentEnrollment.selectCollege();
         await consideration.selectGraduateProgram();
     }
 
     async takeAdultCollegePath() {
-        const current = await this.interests.selectCollegePath();
-        this.adultCollegePath(current);
+        await this.interests.selectCollegePath();
+        this.adultCollegePath();
     }
 
     // Intereset picker's start point for "No Essay" College Scholarship page
-    async adultCollegePath(currentEnrollment) {
-        const lookingFor = await currentEnrollment.selectNeither();
+    async adultCollegePath() {
+        const lookingFor = await this.currentEnrollment.selectNeither();
         const program = await lookingFor.selectCollegeForMyself();
         await program.selectCollege();
     }
 
     async takeCollegeStillInHighSchoolPath() {
-        const current = await this.interests.selectCollegePath();
-        this.selectInHighSchool(current);
+        await this.interests.selectCollegePath();
+        this.selectInHighSchool();
     }
 
     // Intereset picker's start point for "No Essay" College Scholarship page
-    async selectInHighSchool(currentEnrollment) {
-        await currentEnrollment.selectCollege();
+    async selectInHighSchool() {
+        await this.currentEnrollment.selectCollege();
     }
 
     async getTerminalMessage() {

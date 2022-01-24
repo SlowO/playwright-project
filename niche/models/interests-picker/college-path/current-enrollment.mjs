@@ -1,6 +1,5 @@
 import { CollegeConsideration } from './in-college/college-consideration.mjs'
 import { SearchingFor } from './neither/searching-for.mjs'
-import {} from '@playwright/test';
 
 export class CurrentEnrollment {
     constructor(page) {

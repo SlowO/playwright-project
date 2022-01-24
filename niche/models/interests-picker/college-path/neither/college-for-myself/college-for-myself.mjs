@@ -1,5 +1,3 @@
-import {} from '@playwright/test';
-
 export class CollegeForMyself {
     constructor(page) {
         this.page = page;

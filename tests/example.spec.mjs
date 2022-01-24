@@ -2,6 +2,9 @@
 import { Register } from '../niche/models/register.mjs';
 import { test, expect } from '@playwright/test';
 import { NoEssayScholarship } from '../niche/models/no-essay-scholarship.mjs';
+import { InterestsPicker } from '../niche/models/interests-picker/interests-picker.mjs';
+import { CurrentEnrollment } from '../niche/models/interests-picker/college-path/current-enrollment.mjs';
+import { CollegeConsideration } from '../niche/models/interests-picker/college-path/in-college/college-consideration.mjs';
 
 test.describe('Register form', () => {
 
@@ -39,4 +42,24 @@ test.describe('"No Essay" College Scholarship form', () => {
     const text = await scholarship.getTerminalMessage();
     expect(text).toContain('adult learner interested in colleges');
   });
+});
+
+test.describe('Register form (with custom timeout)', () => {
+
+  test('Considering college path', async ({ page }) => {
+    let register = new Register(page);
+    await register.navigate();
+    let interests = new InterestsPicker(page);
+    page.isVisible(interests.college, { timeout: 13000 });
+    await page.locator(interests.college).click();
+    let current = new CurrentEnrollment(page);
+    page.isVisible(current.college, { timeout: 3000 });
+    await page.locator(current.college).click();
+    let considering = new CollegeConsideration(page);
+    await page.locator(considering.neither).click();
+    page.isEnabled(considering.neither, { timeout: 1000 });
+    const text = await register.getTerminalMessage();
+    expect(text).toContain('You are, or soon will be a college student.');
+  });
+
 });
