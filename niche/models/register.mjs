@@ -20,11 +20,17 @@ export class Register extends BasePage {
         this.continueButton = '.form__submit__btn--submit';
     }
 
-    async navigate() {
+    async openPage() {
         await super.navigate('account/register/')
     }
 
     // Interest picker
+    async selectPath (role) {
+        for (const locator in role) {
+            await this.page.click(locator);
+        }
+    }
+
     async takeCollegeTransferPath() {
         await this.interests.selectCollegePath();
         this.collegeTransferPath();

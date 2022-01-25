@@ -7,7 +7,7 @@ export class NoEssayScholarship extends Register {
         super(page);
     }
 
-    async navigate() {
-        await new BasePage(this.page).navigate('colleges/scholarships/no-essay-scholarship/');
+    async openPage() {
+        await this.navigate('colleges/scholarships/no-essay-scholarship/');
     }
 }
