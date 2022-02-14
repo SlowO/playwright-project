@@ -67,6 +67,7 @@ test.describe('Register form (with custom timeout)', () => {
 
     test('Considering college path', async ({ page }) => {
       let register = new Register(page);
+      await register.openPage();
       await register.selectPath(pickerRole.highschool);
     })
 

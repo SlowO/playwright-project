@@ -26,8 +26,8 @@ export class Register extends BasePage {
 
     // Interest picker
     async selectPath (role) {
-        for (const locator in role) {
-            await this.page.click(locator);
+        for (let i = 0; i < role.length; i++) {
+            await this.page.click(role[i]);
         }
     }
 
